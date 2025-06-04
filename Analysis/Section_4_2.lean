@@ -127,6 +127,10 @@ lemma Rat.inv_eq (a:ℤ) (hb: b ≠ 0) : (a // b)⁻¹ = b // a := by
   convert Quotient.lift_mk _ _ _
   all_goals simp [hb]
 
+@[simp]
+theorem Rat.inv_zero : (0:Rat)⁻¹ = 0 := by
+  rfl
+
 /-- Proposition 4.2.4 (laws of algebra) / Exercise 4.2.3 -/
 instance Rat.addGroup_inst : AddGroup Rat :=
 AddGroup.ofLeftAxioms (by
@@ -276,7 +280,7 @@ theorem Rat.add_lt_add_right (x y z:Rat) (hxy: x < y) : x + z < y + z := by sorr
 /-- Proposition 4.2.9(e) (positive multiplication preserves order) / Exercise 4.2.5 -/
 theorem Rat.mul_lt_mul_right (x y z:Rat) (hxy: x < y) (hz: z.isPos) : x * z < y * z := by sorry
 
-/-- (Not from textbook) The order is decidable.  This exercise is only recommended for Lean experts. -/
+/-- (Not from textbook) The order is decidable.  This exercise is only recommended for Lean experts.  Alternatively, one can establish this fact in classical logic via `classical; exact Classical.decRel _` -/
 instance Rat.decidableRel : DecidableRel (· ≤ · : Rat → Rat → Prop) := by
   sorry
 
@@ -302,6 +306,24 @@ instance Rat.instIsStrictOrderedRing : IsStrictOrderedRing Rat where
 theorem Rat.mul_lt_mul_right_of_neg (x y z:Rat) (hxy: x < y) (hz: z.isNeg) : x * z > y * z := by sorry
 
 
+/-- Not in textbook: create an equivalence between Rat and ℚ.  This requires some familiarity with the API for Mathlib's version of the rationals. -/
+abbrev Rat.equivRat : Rat ≃ ℚ where
+  toFun := Quotient.lift (fun ⟨ a, b, h ⟩ ↦ a / b) (by
+    sorry)
+  invFun := sorry
+  left_inv n := sorry
+  right_inv n := sorry
+
+/-- Not in textbook: equivalence preserves order -/
+abbrev Rat.equivRat_order : Rat ≃o ℚ where
+  toEquiv := equivRat
+  map_rel_iff' := by sorry
+
+/-- Not in textbook: equivalence preserves ring operations -/
+abbrev Rat.equivRat_ring : Rat ≃+* ℚ where
+  toEquiv := equivRat
+  map_add' := by sorry
+  map_mul' := by sorry
 
 
 
