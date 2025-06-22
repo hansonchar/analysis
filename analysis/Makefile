@@ -2,14 +2,11 @@
 
 all: build docs
 
-build: cache
-	@echo "Building"
-	@lake build
-
 cache:
-	@echo "Download cached build files"
-	@lake exe cache get
+	lake exe cache get
+
+build: cache
+	lake build
 
 docs:
-	@echo 'Building Analysis:docs with DOCGEN_SRC="file"'
-	@DOCGEN_SRC="file" time lake -R -Kenv=dev build Analysis:docs
+	DOCGEN_SRC="file" time lake -R -Kenv=dev build Analysis:docs
