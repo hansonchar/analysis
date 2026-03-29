@@ -1,7 +1,7 @@
-.PHONY: cond all fetch rebase analysis book
+.PHONY: cond all rebase fetch build
 
 cond: fetch
-	@HEAD=$$(git rev-parse HEAD^); \
+	@HEAD=$$(git rev-parse HEAD^^); \
 	UPSTREAM=$$(git rev-parse upstream/main); \
 	if [ "$$HEAD" = "$$UPSTREAM" ]; then \
 		echo "Current branch is up to date. Skipping the rest."; \
@@ -10,16 +10,13 @@ cond: fetch
 		$(MAKE) all; \
 	fi
 
-all: rebase analysis book
-
-fetch:
-	git fetch upstream
+all: rebase build
 
 rebase: fetch
 	git rebase upstream/main
 
-analysis:
-	$(MAKE) -C analysis
+fetch:
+	git fetch upstream
 
-book:
-	$(MAKE) -C book
+build:
+	@time build.sh
